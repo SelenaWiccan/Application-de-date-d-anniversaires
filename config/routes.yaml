@@ -1,3 +1,30 @@
 index:
     path: /
     controller: App\Controller\DefaultController::index
+
+modifications:
+    path: '/modifications'
+    controller: 'App\Controller\modificationsController::index'
+
+Ajout:
+    path: '/Ajout'
+    controller: 'App\Controller\AjoutController::index'
+
+liste:
+    path: '/liste'
+    controller: 'App\Controller\listeController::index'
+
+AcceuilLogin:
+    path: '/AcceuilLogin'
+    controller: 'App\Controller\AcceuilLoginController::index'
+
+login:
+    path: '/login'
+    controller: 'App\Controller\loginController::index'
+
+NouveauCompte:
+    path: '/NouveauCompte'
+    controller: 'App\Controller\NouveauCompteController::index'
+
+
+
