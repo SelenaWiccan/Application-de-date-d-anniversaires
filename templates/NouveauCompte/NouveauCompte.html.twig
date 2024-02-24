@@ -114,13 +114,21 @@
 
     <div class="example-wrapper">
         <h1 style="color: #FFFFFF">Application de gestion de date! 🗓️ </h1>
+        <h2 style="color: #FFFFFF" > Création de compte</h2>
 
-        <div style="color: #FFFFFF"> Bienvenue sur la page de connexion, connectez vous à votre compte ici ici</div>
+        <div style="color: #FFFFFF"> Créez vous un compte ici</div>
         <br>
         <br>
-        <a href="{{ path('login') }}" class="btn" style="--clr:#6eff3e"><span>Valider</span><i></i></a>
+        <input type="text" id="nom" name="nom" placeholder="Entrez votre nom" maxlength="50" >
+        <input type="text" id="prenom" name="prenom" placeholder="Entrez votre prenom" maxlength="50">
+        <input type="password" id="mdp" name="mdp" placeholder="Entrez votre mot de passe" maxlength="50">
+        <input type="email" id="mail" name="mail" placeholder="Entrez votre email" maxlength="50">
+        <br>
+        <br>
 
-        <a href="{{ path('app_nice_stuff') }}" class="btn" style="--clr:#ff1867"><span>Annuler</span><i></i></a>
+        <a href="{{ path('login') }}" class="btn" style="--clr:#6eff3e"><span>Valider ✅ </span><i></i></a>
+
+        <a href="{{ path('app_nice_stuff') }}" class="btn" style="--clr:#ff1867"><span>Annuler 🔙</span><i></i></a>
 
     </div>
     {#        <ul>#}
