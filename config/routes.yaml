@@ -26,5 +26,10 @@ NouveauCompte:
     path: '/NouveauCompte'
     controller: 'App\Controller\NouveauCompteController::index'
 
+ajouter_date:
+    path: '/ajouter_date'
+    controller: 'App\Controller\AjoutController::ajouterDateAction'
+
+
 
 
