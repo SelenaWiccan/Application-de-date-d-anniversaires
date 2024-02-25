@@ -152,7 +152,7 @@
                     alert('La date saisie n\'est pas dans un format valide (JJ/MM/AAAA).');
                 }
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '{{ path('ajouter_date') }}', true);
+                xhr.open('POST', '{{ path('Ajout') }}', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
                 xhr.onreadystatechange = function () {
