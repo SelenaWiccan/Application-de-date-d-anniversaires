@@ -118,15 +118,79 @@
 
         <div style="color: #FFFFFF"> Ajoutez une date ici</div>
         <br>
+        <input type="text" id="nomInput" name="nomInput" placeholder="nom" required>
+        <input type="text" id="prenomInput" name="nomInput" placeholder="prenom" required>
+        <input type="date" id="dateInput" name="dateInput" placeholder="date" required>
+
         <br>
+        <br>
+        <div id="dateAjoutee"></div>
+
+<br>
         <a href="{{ path('liste') }}" class="btn" style="--clr:#1e9bff"><span>Liste 📋 </span><i></i></a>
-        <a href="{{ path('liste') }}" class="btn" style="--clr:#6eff3e"><span>Ajouter ➕</span><i></i></a>
+        <a href="#" class="btn" style="--clr:#6eff3e" data-action="ajouter"><span>Ajouter ➕</span><i></i></a>
+
+
 
         <a href="{{ path('app_nice_stuff') }}" class="btn" style="--clr:#ff1867"><span>Déconnexion</span><i></i></a>
     </div>
-    {#        <ul>#}
-    {#            <li style="color: #FFFFFF">Your controller at <code><a href="{{ 'C:/xampp/htdocs/www/Appli gestion dates anniversaires/APP/src/Controller/NiceStuffController.php'|file_link(0) }}">src/Controller/NiceStuffController.php</a></code></li>#}
-    {#            <li style="color: #FFFFFF">Your template at <code><a href="{{ 'C:/xampp/htdocs/www/Appli gestion dates anniversaires/APP/templates/nice_stuff/index.html.twig'|file_link(0) }}">templates/nice_stuff/index.html.twig</a></code></li>#}
-    {#        </ul>#}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function ajouterDate(event) {
+                event.preventDefault();
+                var dateValue = document.getElementById('dateInput').value; // Date au format 'AAAA-MM-JJ'
+                var nomValue = document.getElementById('nomInput').value;
+                var prenomValue = document.getElementById('prenomInput').value;
+
+
+
+                // Reformater la date au format 'AAAA-MM-JJ'
+                var dateParts = dateValue.split('-');
+                if (dateParts.length === 3 && dateParts[0] && dateParts[1] && dateParts[2]) {
+                    var formattedDate = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
+                } else {
+                    alert('La date saisie n\'est pas dans un format valide (JJ/MM/AAAA).');
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '{{ path('ajouter_date') }}', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response && response.message) {
+                                alert(response.message);
+                                console.log(dateValue)
+                                console.log(nomValue)
+                                console.log(prenomValue)
+
+                                    document.querySelector('#dateAjoutee').textContent = 'Date ajoutée : ' + dateValue + ' nom : ' + nomValue +' prenom : ' + prenomValue;
+
+                            } else {
+                                alert('Erreur lors de l\'ajout de la date.');
+                            }
+                        } else {
+                            alert('Erreur lors de la requête.');
+                        }
+                    }
+                };
+
+                xhr.send('date=' + encodeURIComponent(formattedDate) + '&nom=' + encodeURIComponent(nomValue) + '&prenom=' + encodeURIComponent(prenomValue));
+            }
+
+            var addButton = document.querySelector('.btn[data-action="ajouter"]');
+            if (addButton) {
+                addButton.addEventListener('click', ajouterDate);
+            } else {
+                console.error("L'élément addButton n'a pas été trouvé.");
+            }
+        });
+
+    </script>
+
+
+
+
     </div>
 {% endblock %}
