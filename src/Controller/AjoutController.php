@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Date;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\ORM;
 
 class AjoutController extends AbstractController
 {
@@ -21,24 +23,34 @@ class AjoutController extends AbstractController
     /**
      * @Route("/ajouter_date", name="ajouter_date", methods={"POST"})
      */
-    public function ajouterDateAction(Request $request): Response
+    public function ajouterDateAction(Request $request): JsonResponse
     {
         // Récupérer les données envoyées via la requête AJAX
-        $date = $request->request->get('dateInput'); // Assurez-vous que 'dateInput' correspond au dateInput de votre input texte
+        $date = $request->request->get('date');
+        $nom = $request->request->get('nom');
+        $prenom = $request->request->get('prenom');
 
-        // Vérifiez si la valeur est correctement récupérée
-        var_dump($date); // Cela vous aidera à vérifier si la valeur est correctement récupérée
-        echo ($date);
+        // Créer une nouvelle instance de l'entité Date et définir ses propriétés
+        $entity = new Date(); // Utilisation de l'entité Date
+        $entity->setDate(new \DateTime($date)); // Assurez-vous que votre propriété date est de type \DateTime
+        $entity->setNom($nom);
+        $entity->setPrenom($prenom);
 
-        // Faites quelque chose avec la date récupérée, par exemple, enregistrez-la dans la base de données
+        // Obtenir le gestionnaire d'entités (Entity Manager)
+        $entityManager = $this->getDoctrine()->getManager();
 
-//        $dateAjoutee = new \DateTime();
-//        $dateFormatee = $dateAjoutee->format('Y-m-d H:i:s');
+        // Persistez l'entité
+        $entityManager->persist($entity);
+
+        // Exécuter les opérations en base de données
+        $entityManager->flush();
 
         // Création de la réponse JSON
         $response = new JsonResponse([
-            'message' => 'Date ajoutée avec succès',
-            'date_ajoutee' => $date
+            'message' => 'Données insérées avec succès',
+            'date_ajoutee' => $date,
+            'nom_ajoutee' => $nom,
+            'prenom_ajoutee' => $prenom,
         ]);
 
         return $response;

@@ -118,10 +118,14 @@
 
         <div style="color: #FFFFFF"> Ajoutez une date ici</div>
         <br>
-        <input type="text" id="dateInput" name="dateInput">
+        <input type="text" id="nomInput" name="nomInput" placeholder="nom" required>
+        <input type="text" id="prenomInput" name="nomInput" placeholder="prenom" required>
+        <input type="date" id="dateInput" name="dateInput" placeholder="date" required>
+
         <br>
         <br>
         <div id="dateAjoutee"></div>
+
 <br>
         <a href="{{ path('liste') }}" class="btn" style="--clr:#1e9bff"><span>Liste 📋 </span><i></i></a>
         <a href="#" class="btn" style="--clr:#6eff3e" data-action="ajouter"><span>Ajouter ➕</span><i></i></a>
@@ -132,25 +136,30 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Définition de la fonction ajouterDate
             function ajouterDate(event) {
                 event.preventDefault();
-                var dateValue = document.getElementById('dateInput').value;
-                // Le reste de votre code ici...
+                var dateValue = document.getElementById('dateInput').value; // Date au format 'AAAA-MM-JJ'
+                var nomValue = document.getElementById('nomInput').value;
+                var prenomValue = document.getElementById('prenomInput').value;
+
+                // Reformater la date au format 'AAAA-MM-JJ'
+                var dateParts = dateValue.split('-');
+                if (dateParts.length === 3 && dateParts[0] && dateParts[1] && dateParts[2]) {
+                    var formattedDate = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
+                } else {
+                    alert('La date saisie n\'est pas dans un format valide (JJ/MM/AAAA).');
+                }
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', '{{ path('ajouter_date') }}', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                // Votre code JavaScript pour gérer la réponse AJAX
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             var response = JSON.parse(xhr.responseText);
                             if (response && response.message) {
-                                // Afficher le message à l'utilisateur
                                 alert(response.message);
-                                // Afficher la date ajoutée avec succès dans l'interface utilisateur
                                 if (response.date_ajoutee) {
-                                    document.getElementById('dateAjoutee').textContent = 'Date ajoutée : ' + response.date_ajoutee;
+                                    document.querySelector('#dateAjoutee').textContent = 'Date ajoutée : ' + response.date_ajoutee + ' nom : ' + nomValue +' prenom : ' + prenomValue;
                                 }
                             } else {
                                 alert('Erreur lors de l\'ajout de la date.');
@@ -161,10 +170,9 @@
                     }
                 };
 
-                xhr.send('date=' + encodeURIComponent(dateValue));
+                xhr.send('date=' + encodeURIComponent(formattedDate) + '&nom=' + encodeURIComponent(nomValue) + '&prenom=' + encodeURIComponent(prenomValue));
             }
 
-            // Ajout de l'événement onclick à votre lien
             var addButton = document.querySelector('.btn[data-action="ajouter"]');
             if (addButton) {
                 addButton.addEventListener('click', ajouterDate);
@@ -172,6 +180,7 @@
                 console.error("L'élément addButton n'a pas été trouvé.");
             }
         });
+
     </script>
 
 
