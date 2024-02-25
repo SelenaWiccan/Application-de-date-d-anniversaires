@@ -142,6 +142,8 @@
                 var nomValue = document.getElementById('nomInput').value;
                 var prenomValue = document.getElementById('prenomInput').value;
 
+
+
                 // Reformater la date au format 'AAAA-MM-JJ'
                 var dateParts = dateValue.split('-');
                 if (dateParts.length === 3 && dateParts[0] && dateParts[1] && dateParts[2]) {
@@ -152,15 +154,19 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', '{{ path('ajouter_date') }}', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             var response = JSON.parse(xhr.responseText);
                             if (response && response.message) {
                                 alert(response.message);
-                                if (response.date_ajoutee) {
-                                    document.querySelector('#dateAjoutee').textContent = 'Date ajoutée : ' + response.date_ajoutee + ' nom : ' + nomValue +' prenom : ' + prenomValue;
-                                }
+                                console.log(dateValue)
+                                console.log(nomValue)
+                                console.log(prenomValue)
+
+                                    document.querySelector('#dateAjoutee').textContent = 'Date ajoutée : ' + dateValue + ' nom : ' + nomValue +' prenom : ' + prenomValue;
+
                             } else {
                                 alert('Erreur lors de l\'ajout de la date.');
                             }
