@@ -8,7 +8,7 @@ modifications:
 
 Ajout:
     path: '/Ajout'
-    controller: 'App\Controller\AjoutController::index'
+    controller: 'App\Controller\AjoutController::ajouterDateAction'
 
 liste:
     path: '/liste'
